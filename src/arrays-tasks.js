@@ -277,8 +277,24 @@ function distinct(arr) {
  *    createNDimensionalArray(4, 2) => [[[[0, 0], [0, 0]], [[0, 0], [0, 0]]], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]]
  *    createNDimensionalArray(1, 1) => [0]
  */
-function createNDimensionalArray(/* n, size */) {
-  throw new Error('Not implemented');
+function createNDimensionalArray(n, size) {
+  const mas = new Array(size).fill(0);
+  // let res = [];
+  // if (n >= 2) {
+  //   for (let i = 0; i < size ** (n - 1); i += 1) {
+  //     res = [...res, mas];
+  //   }
+  // }
+  // for (let p = 0; res.length !== size; p += 1) {
+  //   const arr = new Array(res.length / 2);
+  //   for (let i = 0; i < arr.length; i += 1) {
+  //     arr[i] = new Array(size).fill(res[0]);
+  //     // Creating an array of size 4 and filled of 1
+  //   }
+  //   // console.log(arr)
+  //   res = arr;
+  // }
+  return mas;
 }
 
 /**
@@ -327,8 +343,12 @@ function selectMany(arr, childrenSelector) {
  *   calculateBalance([ [ 10, 8 ], [ 1, 5 ] ])  => (10 - 8) + (1 - 5) = 2 + -4 = -2
  *   calculateBalance([]) => 0
  */
-function calculateBalance(/* arr */) {
-  throw new Error('Not implemented');
+function calculateBalance(arr) {
+  const result = arr.reduce((acc, elem) => {
+    const mas = elem[0] - elem[1];
+    return [...acc, mas];
+  }, []);
+  return result.reduce((sum, current) => sum + current, 0) || 0;
 }
 
 /**
@@ -457,8 +477,13 @@ function getIdentityMatrix(n) {
  *    getIndicesOfOddNumbers([2, 4, 6, 8, 10]) => []
  *    getIndicesOfOddNumbers([11, 22, 33, 44, 55]) => [0, 2, 4]
  */
-function getIndicesOfOddNumbers(/* numbers */) {
-  throw new Error('Not implemented');
+function getIndicesOfOddNumbers(numbers) {
+  return numbers.reduce((acc, elem, index) => {
+    if (elem % 2 !== 0) {
+      return [...acc, index];
+    }
+    return acc;
+  }, []);
 }
 
 /**
@@ -471,8 +496,10 @@ function getIndicesOfOddNumbers(/* numbers */) {
  *    getHexRGBValues([ 0, 255, 16777215]) => [ '#000000', '#0000FF', '#FFFFFF' ]
  *    getHexRGBValues([]) => []
  */
-function getHexRGBValues(/* arr */) {
-  throw new Error('Not implemented');
+function getHexRGBValues(arr) {
+  return arr.reduce((acc, elem) => {
+    return [...acc, `#${elem.toString(16).padStart(6, '0').toUpperCase()}`];
+  }, []);
 }
 
 /**
@@ -489,8 +516,15 @@ function getHexRGBValues(/* arr */) {
  *   getMaxItems([ 10, 2, 7, 5, 3, -5 ], 3) => [ 10, 7, 5 ]
  *   getMaxItems([ 10, 10, 10, 10 ], 3) => [ 10, 10, 10 ]
  */
-function getMaxItems(/* arr, n */) {
-  throw new Error('Not implemented');
+function getMaxItems(arr, n) {
+  const mas = arr;
+  const arr1 = 'n'.repeat(n).split('');
+  if (arr.length === 0) return [];
+  return arr1.map(() => {
+    const i = Math.max(...mas);
+    mas[mas.indexOf(Math.max(...mas))] = -Infinity;
+    return i;
+  });
 }
 
 /**
@@ -505,8 +539,22 @@ function getMaxItems(/* arr, n */) {
  *    findCommonElements(['a', 'b', 'c'], ['b', 'c', 'd']) => [ 'b', 'c' ]
  *    findCommonElements([1, 2, 3], ['a', 'b', 'c']) => []
  */
-function findCommonElements(/* arr1, arr2 */) {
-  throw new Error('Not implemented');
+function findCommonElements(arr1, arr2) {
+  let first = arr1;
+  let second = arr2;
+  if (arr1.length > arr2.length) {
+    first = arr2;
+    second = arr1;
+  }
+  const mas = new Set(
+    first.reduce((acc, elem) => {
+      if (second.includes(elem)) {
+        return [...acc, elem];
+      }
+      return acc;
+    }, [])
+  );
+  return [...mas];
 }
 
 /**
@@ -520,8 +568,24 @@ function findCommonElements(/* arr1, arr2 */) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  const mas = nums.reduce((acc, elem, index) => {
+    let origin = elem;
+    if (index >= nums.length - 1) {
+      return acc;
+    }
+    const arr = nums.slice(index + 1);
+    const k = arr.reduce((accum, fragment) => {
+      if (origin < fragment) {
+        origin = fragment;
+        return accum + 1;
+      }
+      origin = Infinity;
+      return accum;
+    }, 1);
+    return [...acc, k];
+  }, []);
+  return Math.max(...mas);
 }
 
 /**
@@ -561,8 +625,18 @@ function propagateItemsByPositionIndex(arr) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  let index = Math.abs(n);
+  if (n > 0) {
+    index = arr.length - index;
+  }
+  return arr.reduce((acc, elem, i) => {
+    let num = i + index;
+    if (num >= arr.length) {
+      num -= arr.length;
+    }
+    return [...acc, arr[num]];
+  }, []);
 }
 
 /**
