@@ -278,23 +278,10 @@ function distinct(arr) {
  *    createNDimensionalArray(1, 1) => [0]
  */
 function createNDimensionalArray(n, size) {
-  const mas = new Array(size).fill(0);
-  // let res = [];
-  // if (n >= 2) {
-  //   for (let i = 0; i < size ** (n - 1); i += 1) {
-  //     res = [...res, mas];
-  //   }
-  // }
-  // for (let p = 0; res.length !== size; p += 1) {
-  //   const arr = new Array(res.length / 2);
-  //   for (let i = 0; i < arr.length; i += 1) {
-  //     arr[i] = new Array(size).fill(res[0]);
-  //     // Creating an array of size 4 and filled of 1
-  //   }
-  //   // console.log(arr)
-  //   res = arr;
-  // }
-  return mas;
+  if (n === 1) {
+    return new Array(size).fill(0);
+  }
+  return new Array(size).fill(createNDimensionalArray(n - 1, size));
 }
 
 /**
